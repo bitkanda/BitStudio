@@ -6,7 +6,9 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 
 ## Step 1: Start the Metro Server
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+First,take token-example.js file input your token and apiurl,and change file name to token.js.
+
+second, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
 
 To start Metro, run the following command from the _root_ of your React Native project:
 
@@ -38,6 +40,8 @@ npm run android
 yarn android
 ```
 
+cd android
+./gradlew assembleRelease
 ### For iOS
 
 ```bash

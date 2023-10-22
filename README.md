@@ -20,6 +20,15 @@ npm start
 yarn start
 ```
 
+tool use remark:
+yarn global add react-native-create-library@latest
+
+react-native-create-library ApkInstaller
+
+yarn add file:ApkInstaller
+
+use for cmd execute，use powsershell cand be error.
+
 ## Step 2: Start your Application
 
 Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
@@ -27,6 +36,9 @@ Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _roo
 ### For Android
 
 ```bash
+
+# 安装组件包。
+yarn add file:ApkInstaller
 
 # allows request 
 adb reverse tcp:8081 tcp:8081
@@ -87,3 +99,7 @@ To learn more about React Native, take a look at the following resources:
 - [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
 - [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
 - [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+
+
+adb logcat
+命令查看日志，针对发布后的版本程序如果异常，需要添加日志，配合这个日志查看器进行问题排查。

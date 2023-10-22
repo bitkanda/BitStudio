@@ -10,7 +10,7 @@ import {
   InputToolbar,
   Composer
 } from 'react-native-gifted-chat'
-
+import { Alert } from 'react-native'
 
 import ai from '../assets/ai.png';
 import my from '../assets/my.png';
@@ -35,7 +35,7 @@ var currentAI={
 
 };
   //设置过期时间。
-  const expirationDate = new Date('2023-10-02');
+  const expirationDate = new Date('2024-05-02');
 
 
 
@@ -101,7 +101,7 @@ const db = SQLite.openDatabase({
  const defaultMessage= 
   {
     _id: "9999999",
-    text: '您好，我是硅基生命，请提出您的问题。',
+    text: '您好，我是知之乐AI，请提出您的问题。',
     createdAt: new Date(),
     user: {
       _id: currentAI.userId,

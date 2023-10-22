@@ -1,8 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
-<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+<uses-permission android:name="android.permission.VIBRATE" />
+<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
       android:name=".MainApplication"
@@ -10,7 +14,8 @@
       android:icon="@mipmap/ic_launcher"
       android:roundIcon="@mipmap/ic_launcher_round"
       android:allowBackup="false"
-      android:theme="@style/AppTheme">
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:theme="@style/AppTheme">
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
@@ -23,5 +28,31 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
       </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+<meta-data
+    android:name="com.dieam.reactnativepushnotification.notification_channel_id"
+    android:value="default" />
+<meta-data
+    android:name="com.dieam.reactnativepushnotification.notification_channel_name"
+    android:value="default" />
+<meta-data
+    android:name="com.dieam.reactnativepushnotification.notification_channel_description"
+    android:value="YourChannelDescription" />
+<meta-data
+    android:name="com.dieam.reactnativepushnotification.notification_channel_importance"
+    android:value="3" />
+<meta-data
+    android:name="com.dieam.reactnativepushnotification.notification_channel_vibrate"
+    android:value="false" />
+
     </application>
 </manifest>

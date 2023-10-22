@@ -6,8 +6,10 @@ import { TouchableOpacity,Text,StyleSheet,Modal,View } from 'react-native';
 import HomeScreen from './HomeScreen'; 
 import DetailsScreen from './DetailsScreen'; 
 import { useNavigation } from '@react-navigation/native';
- import NewModal from './NewModal';
-
+import NewModal from './NewModal';
+import Login from './Login';
+import DeviceInfo from 'react-native-device-info';
+const appVersion = DeviceInfo.getVersion();
 const Stack = createStackNavigator();
  
 
@@ -26,16 +28,17 @@ function AppNavigator() {
   return (
 
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen name="Login" component={Login} options={{ title: '' }} />
         <Stack.Screen name="Home" component={HomeScreen} options={{ 
-          title: 'AI Studio',
+          title: '知之乐AI('+appVersion+')',
           headerRight: () => (
             <TouchableOpacity onPress={newHandleButtonPress}>
               <Text  style={styles.headerButton}>+</Text>
             </TouchableOpacity>
           )
            }} />
-        <Stack.Screen name="Details" component={DetailsScreen} options={{ title: '💬 AI Studio Chat' }} />
+        <Stack.Screen name="Details" component={DetailsScreen} options={{ title: '💬 知之乐AI' }} />
       </Stack.Navigator>
       <NewModal isVisible={isModalVisible} onClose={closeHandleButtonPress} />
 

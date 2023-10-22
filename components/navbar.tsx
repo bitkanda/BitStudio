@@ -11,7 +11,7 @@ export function NavBar() {
  <TouchableOpacity onPress={() => {}}>
    <Text style={{fontSize: 25}}>{' < '}</Text>
  </TouchableOpacity>
-  <Text>💬 AI Studio Chat</Text>
+  <Text>💬 知之乐AI 会话</Text>
   <TouchableOpacity onPress={() => {}}>
     <Text style={{fontSize: 25}}>{' ::: '}</Text>
   </TouchableOpacity>

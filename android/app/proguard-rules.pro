@@ -8,3 +8,5 @@
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
 # Add any project specific keep options here:
+# 保护通知相关的类
+-keep class android.app.Notification** { *; }

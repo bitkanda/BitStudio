@@ -1,5 +1,5 @@
-import {React,useState,useCallback} from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import {React,useState,useCallback,useRef } from 'react';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity,TouchableWithoutFeedback, Modal  } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import SessionHelp from './SessionHelp';
 import SQLite from 'react-native-sqlite-storage';
@@ -37,6 +37,28 @@ const styles = StyleSheet.create({
     grayText: {
       color: 'gray',
     },
+
+    //菜单
+    menu: {
+      backgroundColor: 'white',
+  borderRadius: 5,
+  padding: 10,
+  margin: 20,
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.3,
+  shadowRadius: 4,
+  elevation: 5,
+  //justifyContent: 'center', // 添加这行代码
+  //alignItems: 'center', // 添加这行代码
+    },
+    menuItem: {
+      padding: 10,
+    },
+    menuItemText: {
+      color: 'black',
+    },
+
   });
 
 
@@ -72,6 +94,22 @@ function HomeList() {
     });
   }
 
+  const deleteSession = (id) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'DELETE FROM sessions WHERE id = ?',
+        [id],
+        (_, result) => {
+          console.log('Session deleted successfully!');
+          // 执行删除成功后的逻辑
+          // 可以重新获取数据或刷新UI等操作
+        },
+        (_, error) => {
+          console.error('Error deleting session:', error);
+        }
+      );
+    });
+  };
 const LoadListData=(sessions)=>
 {
   //SessionHelp.data=[];
@@ -111,13 +149,14 @@ const LoadListData=(sessions)=>
   const navigation = useNavigation();
 
   
-  const handleItemPress = (itemText) => {
-    navigation.navigate('Details', { itemText });
-  };
+  // const handleItemPress = (itemText) => {
+  //   navigation.navigate('Details', { itemText });
+  // };
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
-      onPress={() => navigation.navigate('Details', { text: item.text,sessionId:item.session_id })} // 传递文本到Details页
+    onLongPress={() => handleLongPress(item)}
+      onPress={() => navigation.navigate('NewDetailsScreen', { text: item.text,sessionId:item.session_id })} // 传递文本到Details页
       style={{
         padding: 10,
         backgroundColor: '#fff', // 背景颜色
@@ -128,6 +167,35 @@ const LoadListData=(sessions)=>
       <Text style={{ color: 'black', fontSize: 18 }}>💬 {item.text}</Text>
     </TouchableOpacity>
   );
+//菜单。
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [showContextMenu, setShowContextMenu] = useState(false);
+
+  const handleLongPress = (item) => {
+    setSelectedItem(item);
+    setShowContextMenu(true);
+  };
+
+  const handleCopy = () => {
+    // 复制选中项的逻辑
+    console.log('Copy:', selectedItem);
+    setShowContextMenu(false);
+  };
+
+  const handleDelete = () => {
+    // 删除选中项的逻辑
+    console.log('Delete:', selectedItem);
+    if (selectedItem) {
+      deleteSession(selectedItem.id);
+    }
+    setShowContextMenu(false);
+
+    const updatedData = SessionHelp.data.filter(item => item.id !== selectedItem.id);
+    SessionHelp.data = updatedData;
+    setData(SessionHelp.data);
+
+  };
+
 
   return (
     <View>
@@ -136,10 +204,24 @@ const LoadListData=(sessions)=>
       renderItem={renderItem}
       keyExtractor={(item) => item.id}
     />
+ <Modal visible={showContextMenu} transparent={true}>
+        <TouchableOpacity style={{flex: 1, justifyContent: 'center', alignItems: 'center' }} onPress={() => setShowContextMenu(false)}>
+          <View style={styles.menu}>
+            {/* <TouchableOpacity style={styles.menuItem} onPress={handleCopy}>
+              <Text style={styles.menuItemText}>复制</Text>
+            </TouchableOpacity> */}
+            <TouchableOpacity style={styles.menuItem} onPress={handleDelete}>
+              <Text style={styles.menuItemText}>删除</Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      </Modal>
+
   </View>
   );
 }
 
 
+ 
 
 export default HomeList;

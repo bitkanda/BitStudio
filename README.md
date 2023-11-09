@@ -101,5 +101,19 @@ To learn more about React Native, take a look at the following resources:
 - [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
 
 
-adb logcat
+# adb logcat
 命令查看日志，针对发布后的版本程序如果异常，需要添加日志，配合这个日志查看器进行问题排查。
+
+# 修改第三方源码，并补丁。
+1.安装补丁工具
+yarn add patch-package postinstall-postinstall
+
+2.修改源码。
+
+3.下面这个例子是把修改了的包打补丁，并指定使用 yarn工具。
+yarn  patch-package react-native-gifted-chat --use-yarn
+
+4.修改本地项目的package.json文件，scripts 属性下：增加命令
+ "postinstall": "patch-package"
+
+5.直接删除包然后安装会自动打上补丁。

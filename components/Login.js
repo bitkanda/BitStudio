@@ -24,6 +24,9 @@ const LoginPage = () => {
     navigation.navigate('Home');
   };
 
+  const handleLoginSms = () => {
+    navigation.navigate('LoginSMS');
+  };
  const onSelect=(index, value)=>{
     this.setState({
     text: `Selected index: ${index} , value: ${value}`
@@ -97,7 +100,7 @@ const LoginPage = () => {
 
 
       <View style={styles.container}>
-      <Text style={styles.title}>手机验证码登录</Text>
+      <Text style={styles.title} onPress={handleLoginSms}>手机验证码登录</Text>
       {/* 其他组件 */}
     </View>
       {/* <Text style={{ marginTop: 10, color: 'blue', textDecorationLine: 'underline' }}>手机验证码登录</Text> */}

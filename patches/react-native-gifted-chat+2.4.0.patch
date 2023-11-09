@@ -1,0 +1,14 @@
+diff --git a/node_modules/react-native-gifted-chat/lib/Bubble.js b/node_modules/react-native-gifted-chat/lib/Bubble.js
+index 70b74ae..a417860 100644
+--- a/node_modules/react-native-gifted-chat/lib/Bubble.js
++++ b/node_modules/react-native-gifted-chat/lib/Bubble.js
+@@ -80,7 +80,8 @@ const styles = {
+         },
+     }),
+ };
+-const DEFAULT_OPTION_TITLES = ['Copy Text', 'Cancel'];
++const DEFAULT_OPTION_TITLES = ['复制文本', '取消'];
++
+ export default class Bubble extends React.Component {
+     constructor() {
+         super(...arguments);

@@ -43,6 +43,8 @@ import { PermissionsAndroid } from 'react-native';
 import AppNavigator from './components/AppNavigator'; // 导入 AppNavigator 组件
 import DeviceInfo from 'react-native-device-info';
 import RNFS from 'react-native-fs';
+import SQLite from 'react-native-sqlite-storage';
+import { useNavigation } from '@react-navigation/native';
 import {
   NativeModules,
 } from 'react-native';
@@ -50,12 +52,13 @@ const { RNApkInstaller,PushNotification } = NativeModules;
 
 import { TouchableOpacity } from 'react-native';
 import UpdateModal  from './components/UpdateModal';
+import SessionHelp from './components/SessionHelp';
  
 //import PushNotification from 'react-native-push-notification';
 //import { Notifications } from 'react-native-notifications';
 
 //var updateurl="http://192.168.1.102:5009/update/index";
-var updateurl="http://scmtop.com/update/index";
+var updateurl="http://zhizhile.net/update/index";
 const savePath = `${RNFS.ExternalDirectoryPath}/${DeviceInfo.getApplicationName()}.apk`;
 
 
@@ -66,7 +69,7 @@ function App(): JSX.Element {
 
   const [isUpdateModalVisible, setUpdateModalVisible] = useState(false);
   const [latestVersionInfo, setLatestVersionInfo] = useState({versionName:"",url:"",time:""});
-
+  const [initialRoute, setInitialRoute] = useState('LoadingScreen');//Home,LoginSMS,LoadingScreen
 
   const newHandleButtonPress = () => {
     setUpdateModalVisible(true);
@@ -148,8 +151,8 @@ function App(): JSX.Element {
       });
 
       const data = await response.json();
-      console.log("checkUpdateResponse:返回");
-      console.log(data);
+     // console.log("checkUpdateResponse:返回");
+      //console.log(data);
       return data;
     } catch (error) {
       console.error('获取最新的版本信息失败:'+error.message);
@@ -257,26 +260,27 @@ const checkAndUpdateVersion = async (ApiUrl: string, handleDownload: () => void)
 
 
 
+ 
+
+ 
 
 const checkAndUpdateVersionEvent=async ()=>{
  await checkAndUpdateVersion(updateurl,handleDownload);
 
 
 };
+ 
 
   useEffect( () => {
-    console.log("useEffect");
+
+    console.log("app-useEffect****");
+   
+    //readUser();
    //requestStoragePermission();
-
-
-   
    checkAndUpdateVersion(updateurl,handleDownload).then((versionInfo)=>{
-    console.log(versionInfo);
-
+    //console.log(versionInfo);
     const appVersion = DeviceInfo.getVersion();
-   
     console.log('App Version:', appVersion);
-
    }).catch((error) => {
     // 处理错误
     console.error('获取最新版本信息失败', error);
@@ -284,25 +288,13 @@ const checkAndUpdateVersionEvent=async ()=>{
    //downloadFile();
     // 调用显示通知的方法
    // PushNotification.showProgressNotification();
-     
+       //加载用户信息
+
+
 
   }, []);
 
 
-
-  //  // 发送通知
-  //  PushNotification.localNotification({
-  //   id:updateNotificationId,
-  //   channelId: channelId, // 使用之前创建的通知渠道
-  //   title: '正在下载',
-  //   message: `下载进度: ${progress}%`,
-  //   // 自定义通知布局，包括进度条
-  //   bigText: `下载进度: ${progress}%`,
-  //   largeIcon: 'ic_launcher',
-  //   smallIcon: 'ic_notification',
-  //   progress: { max: 100, current: progress, indeterminate: false },
-  // });
-  
 
 
 
@@ -317,7 +309,8 @@ const checkAndUpdateVersionEvent=async ()=>{
             <Text style={styles.buttonText}>下载更新</Text>
           </TouchableOpacity>   */}
           <UpdateModal isVisible={isUpdateModalVisible} onClose={closeHandleButtonPress} lastVersion={latestVersionInfo} />
-          <AppNavigator />
+     
+          <AppNavigator  initialRouteName={initialRoute}/>
         </View>
   );
 }

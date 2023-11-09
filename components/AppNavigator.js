@@ -1,21 +1,39 @@
 
-import {React,useState} from 'react';
+import {React,useState,useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { TouchableOpacity,Text,StyleSheet,Modal,View } from 'react-native';
 import HomeScreen from './HomeScreen'; 
 import DetailsScreen from './DetailsScreen'; 
+import NewDetailsScreen from './NewDetailsScreen'; 
+import LoginSMSPage from './LoginSMS';
+import LoadingScreen from './LoadingScreen';
 import { useNavigation } from '@react-navigation/native';
 import NewModal from './NewModal';
 import Login from './Login';
+import BuyScreen from './BuyScreen';
 import DeviceInfo from 'react-native-device-info';
+import SQLite from 'react-native-sqlite-storage';
+import SessionHelp from './SessionHelp';
+
+
 const appVersion = DeviceInfo.getVersion();
 const Stack = createStackNavigator();
  
 
-function AppNavigator() {
-
+function AppNavigator({ initialRouteName }) {
+ 
   const [isModalVisible, setModalVisible] = useState(false);
+  const [initialRoute, setInitialRoute] = useState(initialRouteName);//Home,LoginSMS
+  console.log('AppNavigator:initialRoute',initialRoute)
+    useEffect(()=>{
+      
+      if(initialRoute==undefined)
+      setInitialRoute("没有加载路由");
+    console.log('AppNavigator-initialRoute:'+initialRoute);
+     
+    });
+
 
   const newHandleButtonPress = () => {
     setModalVisible(true);
@@ -25,13 +43,21 @@ function AppNavigator() {
     setModalVisible(false);
   };
 
-  return (
 
+  return (
+    // initialRouteName={initialRoute}
+    
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen name="Login" component={Login} options={{ title: '' }} />
-        <Stack.Screen name="Home" component={HomeScreen} options={{ 
+      <Stack.Navigator initialRouteName={initialRoute}>
+     { console.log('渲染NavigationContainer:'+initialRoute)}
+      
+         <Stack.Screen name="LoadingScreen" component={LoadingScreen} options={{ title: '', headerLeft: null}} /> 
+         <Stack.Screen name="LoginSMS" component={LoginSMSPage} options={{ title: '', headerLeft: null}} /> 
+        <Stack.Screen name="Login" component={Login} options={{ title: '',headerLeft: null }} />
+           
+     <Stack.Screen name="Home" component={HomeScreen} options={{ 
           title: '知之乐AI('+appVersion+')',
+          headerLeft: null, // 这里设置为null
           headerRight: () => (
             <TouchableOpacity onPress={newHandleButtonPress}>
               <Text  style={styles.headerButton}>+</Text>
@@ -39,7 +65,14 @@ function AppNavigator() {
           )
            }} />
         <Stack.Screen name="Details" component={DetailsScreen} options={{ title: '💬 知之乐AI' }} />
+     <Stack.Screen name="NewDetailsScreen" component={NewDetailsScreen} options={{ title: '💬知之乐AI+' }} />
+ 
+        <Stack.Screen name="buy" component={BuyScreen} options={{ title: '购买' }} />
+ 
+       
       </Stack.Navigator>
+
+
       <NewModal isVisible={isModalVisible} onClose={closeHandleButtonPress} />
 
  

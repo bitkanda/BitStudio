@@ -16,7 +16,8 @@ public class RNApkInstallerPackage implements ReactPackage {
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<NativeModule>();
         modules.add(new RNApkInstallerModule(reactContext));
-        modules.add(new PushNotificationModule(reactContext)); // 添加 PushNotificationModule
+        modules.add(new ChatGPTApiModule(reactContext));
+        modules.add(new com.reactlibrary.PushNotificationModule(reactContext)); // 添加 PushNotificationModule
         return modules;
     }
 
